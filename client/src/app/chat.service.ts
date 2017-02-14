@@ -23,16 +23,31 @@ export class ChatService {
   }
 
     getRoomList() : Observable<string[]> {
-      let obs = new Observable(observer => {
+      const obs = new Observable(observer => {
         this.socket.emit("rooms");
         this.socket.on("roomlist", (lst) => {
-          let strArr: string[] = [];
+          const strArr: string[] = [];
           for(var x in lst){
-            strArr.push(x);
+            if(lst.hasOwnProperty(x)) {
+              strArr.push(x);
+            }
           }
           observer.next(strArr);
         })
       });
       return obs;
+    }
+
+    addRoom(roomName: string) :  Observable<boolean> {
+      const observable = new Observable(observer => {
+        //todo: VALIDATE THAT THE ROOM NAME IS VALIDATE
+        var param =  {
+          room: roomName
+        }
+        this.socket.emit("joinroom", param, function(a : boolean, b) {
+          observer.next(a);
+        });
+      });
+      return observable;
     }
 }

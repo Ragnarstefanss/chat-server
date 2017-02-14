@@ -1,21 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from "../chat.service";
-
+import {Router, ActivatedRoute} from '@angular/router';
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })
 export class RoomComponent implements OnInit {
-
-  constructor(private  chatService: ChatService) { }
-
-  rooms: string[];
+  roomId : string;
+  constructor(private router: Router,
+     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.chatService.getRoomList().subscribe(lst => {
-      this.rooms = lst;
-    })
+    this.roomId = this.route.snapshot.params['id'];
+
   }
 
 }

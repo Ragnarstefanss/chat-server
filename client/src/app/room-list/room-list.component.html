@@ -1,3 +1,9 @@
-<p>
-  room-list works!
-</p>
+<ul>
+  <li *ngFor="let room of rooms">
+    <a [routerLink]="['/rooms', room]">{{room}}</a>
+  </li>
+</ul>
+
+
+<input [(ngModel)]="newRoomName" />
+<button (click)="onNewRoom()">Add new room</button>

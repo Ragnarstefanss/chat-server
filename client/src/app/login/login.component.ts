@@ -10,6 +10,7 @@ import { Router } from "@angular/router"
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   userName: string;
   loginFailed: boolean = false;
