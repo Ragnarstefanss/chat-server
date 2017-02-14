@@ -4,4 +4,4 @@
 <h3>node server/chatserver.js</h3>
 <h3>ng serve</h3>
 
-![alt tag](http://giphy.com/gifs/football-night-fantasy-lnlAifQdenMxW)
+![alt tag](https://media.giphy.com/media/lnlAifQdenMxW/giphy.gif)
