@@ -1,11 +1,26 @@
 <p>
   {{topic}}
 </p>
-<input [(ngModel)]="msg" />
-<button>changeTopic</button>
+
+<!-- Admin -->
+<div [hidden]="!checkAdmin" >
+  <h1>Admin panel</h1>
+  <input [(ngModel)]="topic" />
+  <button>changeTopic</button>
+  <br><br>
+  <input [(ngModel)]="control_person" />
+  <button>kick</button>
+  <button>ban</button>
+  <button>op</button>
+  <button>deop</button>
+</div>
+
 <div>{{roomId}}</div>
 <h1>Users</h1>
 <ul>
+  <li *ngFor="let opp of ops">
+    {{opp}}
+  </li>
   <li *ngFor="let user of users">
     {{user}}
   </li>
@@ -20,7 +35,3 @@
 <input [(ngModel)]="msg" />
 <button (click)="onSend()">send message</button>
 <button (click)="onLeave()">leave</button>
-<button>kick</button>
-<button>ban</button>
-<button>op</button>
-<button>deop</button>
