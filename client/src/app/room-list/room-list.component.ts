@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from "../chat.service";
+import { ChatService} from "../chat.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -9,25 +9,31 @@ import { Router } from "@angular/router";
 })
 export class RoomListComponent implements OnInit {
 
+  constructor(private chatService : ChatService, private router: Router) { }
+
   rooms: string[];
-  newRoomName: string;
-  constructor(private chatService : ChatService,
-  private router : Router) { }
+  roomName: string;
+
 
   ngOnInit() {
-    this.chatService.getRoomList().subscribe(lst => {
+    this.chatService.getRoomsList().subscribe(lst => {
       this.rooms = lst;
     })
+
+  }
+     onJoinRoom() {
+
+      console.log("joinRoom called in component");
+      if(this.roomName.length < 1)
+      {
+        return;
+      }
+      this.chatService.joinRoom(this.roomName).subscribe(succeeded =>{
+        if(succeeded === true)
+        {
+          this.router.navigate(["rooms",this.roomName]);
+        }
+      });
   }
 
-  onNewRoom() {
-    if(this.newRoomName.length < 1) {
-      return;
-    }
-    this.chatService.addRoom(this.newRoomName).subscribe(succeeded => {
-      if(succeeded === true) {
-        this.router.navigate(["rooms", this.newRoomName]);
-      }
-    });
-  }
 }

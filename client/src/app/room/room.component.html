@@ -1,6 +1,26 @@
-<p>Room works</p>
-
+<p>
+  {{topic}}
+</p>
+<input [(ngModel)]="msg" />
+<button>changeTopic</button>
 <div>{{roomId}}</div>
+<h1>Users</h1>
+<ul>
+  <li *ngFor="let user of users">
+    {{user}}
+  </li>
+</ul>
+<h1>Chatroom</h1>
+<ul>
+  <li *ngFor="let message of messageHistory">
+    {{message}}
+  </li>
+</ul>
 
-<input [(ngModel)]="newChatInput" />
-<button (click)="onNewChat()">Send</button>
+<input [(ngModel)]="msg" />
+<button (click)="onSend()">send message</button>
+<button (click)="onLeave()">leave</button>
+<button>kick</button>
+<button>ban</button>
+<button>op</button>
+<button>deop</button>
