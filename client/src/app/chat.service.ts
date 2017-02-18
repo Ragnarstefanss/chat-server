@@ -99,14 +99,17 @@ export class ChatService {
       }
       this.socket.emit("sendmsg", param);
 
-      this.socket.on('updatechat', (roomname, lst) => {
-        let strArr: string[] = [];
-        for (var x in lst) {
-          var tempMsg = (lst[x]["nick"]) + ": " + (lst[x]["message"]) + "  " + (lst[x]["timestamp"]);
-          strArr.push(tempMsg);
+      this.socket.on('updatechat', (room, lst) => {
+        if(room == roomname)
+        {
+          let strArr: string[] = [];
+          for (var x in lst) {
+              var tempMsg = (lst[x]["nick"]) + ": " + (lst[x]["message"]) + "  " + (lst[x]["timestamp"]);
+              strArr.push(tempMsg);
+            }
         }
-        observer.next(strArr);
-      })
+          observer.next(strArr);
+        };
     });
     return observable;
   }

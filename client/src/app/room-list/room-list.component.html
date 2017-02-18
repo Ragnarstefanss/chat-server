@@ -1,6 +1,6 @@
 <ul>
   <li *ngFor="let room of rooms">
-    <a [routerLink]="['/rooms', room]">{{room}}</a>
+    <a [routerLink]="['/rooms', room]" (click)="clickNewRoom">{{room}}</a>
   </li>
 </ul>
 
