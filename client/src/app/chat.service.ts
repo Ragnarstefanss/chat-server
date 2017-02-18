@@ -107,9 +107,9 @@ export class ChatService {
               var tempMsg = (lst[x]["nick"]) + ": " + (lst[x]["message"]) + "  " + (lst[x]["timestamp"]);
               strArr.push(tempMsg);
             }
-        }
           observer.next(strArr);
-        };
+        }
+      });
     });
     return observable;
   }

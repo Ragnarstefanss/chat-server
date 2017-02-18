@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
       if(succeeded === true) {
         this.router.navigate(['/rooms']);
         // TODO Redirect to RoomList component!
-
       }
     });
   }

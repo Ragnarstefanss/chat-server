@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { RoomListComponent } from './room-list/room-list.component';
 import { RoomComponent } from './room/room.component';
 import { ChatService } from "./chat.service";
+import { AlertModule } from 'ng2-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ChatService } from "./chat.service";
   ],
   imports: [
     BrowserModule,
+    AlertModule.forRoot(),
     FormsModule,
     HttpModule,
     RouterModule.forRoot([{
