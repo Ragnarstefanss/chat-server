@@ -1,11 +1,13 @@
-<ul>
-  <li *ngFor="let room of rooms">
+<ul class="list-group">
+   <li class="list-group-item" *ngFor="let room of rooms">
     <a [routerLink]="['/rooms', room]" (click)="clickNewRoom">{{room}}</a>
   </li>
 </ul>
 
-<input [(ngModel)]="roomName" />
-<button (click)="onJoinRoom()">Join room</button>
-<div [hidden]="!roomBlocked">
-  Sorry the server failed to join the room!
+<div class="form-inline">
+  <input type="text" class="form-control" placeholder="Roomname"  [(ngModel)]="roomName" />
+  <button type="button" class="btn btn-default" (click)="onJoinRoom()">Create / Join room</button>
+  <div [hidden]="!roomBlocked">
+    Sorry the server failed to join the room!
+  </div>
 </div>

@@ -1,5 +1,7 @@
-<input [(ngModel)]="userName" />
-<button (click)="onLogin()">Login</button>
-<div [hidden]="!loginFailed">
-    Sorry, but this username is already taken
+<div class="form-inline">
+  <input type="text" class="form-control" placeholder="Username" [(ngModel)]="userName" />
+  <button type="button" class="btn btn-default" (click)="onLogin()">Login</button>
+  <div [hidden]="!loginFailed">
+      Sorry, but this username is already taken
+  </div>
 </div>
