@@ -8,21 +8,17 @@ import { Router } from "@angular/router";
   styleUrls: ['./room-list.component.css']
 })
 export class RoomListComponent implements OnInit {
-
   constructor(private chatService : ChatService, private router: Router) { }
-
   rooms: string[];
   roomName: string;
-
 
   ngOnInit() {
     this.chatService.getRoomsList().subscribe(lst => {
       this.rooms = lst;
     })
-
   }
-  onJoinRoom() {
 
+  onJoinRoom() {
     console.log("joinRoom called in component");
     if (this.roomName.length < 1) {
       return;
@@ -31,11 +27,14 @@ export class RoomListComponent implements OnInit {
       if (succeeded === true) {
         this.router.navigate(["rooms", this.roomName]);
       }
+      else {
+        console.log("not logged inn");
+        this.router.navigate(["./"]);
+      }
     });
   }
 
-  clickNewRoom(roomname : string)
-  {
+  clickNewRoom(roomname : string) {
     this.roomName = roomname;
     this.onJoinRoom();
   }

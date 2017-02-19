@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from "@angular/router";
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })
+
 export class RoomComponent implements OnInit {
   constructor(private chatService: ChatService, private router: Router, private route: ActivatedRoute) {}
   msg: string;
@@ -23,10 +24,15 @@ export class RoomComponent implements OnInit {
 
   ngOnInit() {
     this.roomId = this.route.snapshot.params['id'];
-
+    this.chatService.showTopic(this.roomId).subscribe(lst => {
+      if (lst == "not logged inn") {
+        console.log("not logged in returning to login");
+        this.router.navigate(["./"]);
+      }
+      console.log("lst :" + lst);
+      this.topic = lst;
+    })
     this.chatService.sendmsg(this.roomId, "Joined").subscribe(lst => {
-      //console.log("succeeded?" + succeeded);
-      this.messageHistory = [];
       this.messageHistory = lst;
     });
     this.chatService.showUsers(this.roomId).subscribe(lst => {
@@ -38,13 +44,12 @@ export class RoomComponent implements OnInit {
       if (lst == true) {
         console.log("you are an op");
         this.admin = true;
+      } else {
+        this.admin = false;
       }
     })
 
-    this.chatService.showTopic(this.roomId).subscribe(lst => {
-      console.log("lst :" + lst);
-      this.topic = lst;
-    })
+
     this.chatService.onKickBan(this.roomId).subscribe(succeeded => {
       if (succeeded === true) {
         this.router.navigate(["./rooms"]);
@@ -63,11 +68,9 @@ export class RoomComponent implements OnInit {
     }
     this.chatService.sendmsg(this.roomId, this.msg).subscribe(lst => {
       //console.log("succeeded?" + succeeded);
-      this.msg = ""
       this.messageHistory = [];
       this.messageHistory = lst;
     });
-
     console.log("message sent");
   }
   onLeave() {
@@ -82,9 +85,7 @@ export class RoomComponent implements OnInit {
     this.router.navigate(["./rooms"]);
   }
   onDisconnect() {
-
     this.chatService.disconnect(this.roomId).subscribe(succeeded => {});
-
     this.router.navigate(["./"]);
   }
   onChangeTopic() {
@@ -97,10 +98,8 @@ export class RoomComponent implements OnInit {
   }
   onBan() {
     this.chatService.ban(this.OpUser, this.roomId).subscribe(succeeded => {});
-
   }
   onDeBan() {
-    console.log("deban");
     this.chatService.deban(this.OpUser, this.roomId).subscribe(succeeded => {});
   }
   onOp() {
@@ -110,6 +109,6 @@ export class RoomComponent implements OnInit {
     this.chatService.deOp(this.OpUser, this.roomId).subscribe(succeeded => {});
   }
   onPsMsg() {
-    this.chatService.privatemsg(this.psUser, this.roomId, this.psMsg).subscribe(succeeded => {  });
+    this.chatService.privatemsg(this.psUser, this.roomId, this.psMsg).subscribe(succeeded => {});
   }
 }

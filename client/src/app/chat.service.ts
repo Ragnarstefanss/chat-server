@@ -44,9 +44,16 @@ export class ChatService {
       var param = {
         room: roomName
       }
-      this.socket.emit("joinroom", param, function(a: boolean, b) {
-        observer.next(a);
-      });
+      if (this.user != undefined) {
+        console.log("user is " + this.user);
+        this.socket.emit("joinroom", param, function(a: boolean, b) {
+          observer.next(a);
+        });
+      }
+      else {
+        observer.next(false);
+      }
+
     });
     return observable;
   }
@@ -73,13 +80,18 @@ export class ChatService {
 
   showTopic(roomName: string): Observable < string > {
     let obs = new Observable(observer => {
+      if (this.user != undefined) {
+        this.socket.on('updatetopic', (r, topic, username) => {
+          if (r == roomName) {
+            console.log("topic changed");
+            observer.next(topic);
+          }
+        });
+      }
+      else {
+        observer.next("not logged inn");
+      }
 
-      this.socket.on('updatetopic', (r, topic, username) => {
-        if (r == roomName) {
-          console.log("topic changed");
-          observer.next(topic);
-        }
-      });
 
     });
     return obs;
@@ -135,18 +147,17 @@ export class ChatService {
     return observable;
   }
 
-  showPs(): Observable < string >
-    {
-      const observable = new Observable(observer => {
-        this.socket.on('recv_privatemsg', (username, message) => {
-          var tempMsg = username + ": " + message + "  ";
-          if (this.user == username) {
-            observer.next(tempMsg);
-          }
-        })
-      });
-      return observable;
-    }
+  showPs(): Observable < string > {
+    const observable = new Observable(observer => {
+      this.socket.on('recv_privatemsg', (username, message) => {
+        var tempMsg = username + ": " + message + "  ";
+        if (this.user == username) {
+          observer.next(tempMsg);
+        }
+      })
+    });
+    return observable;
+  }
 
 
   Leave(room: string): Observable < boolean > {
@@ -178,6 +189,7 @@ export class ChatService {
     });
     return observable;
   }
+
   setTopic(room: string, topic: string): Observable < string > {
     const observable = new Observable(observer => {
       var param = {
@@ -188,6 +200,7 @@ export class ChatService {
     })
       return observable;
   }
+  
   kick(username: string, r: string): Observable < boolean > {
     const observable = new Observable(observer => {
       var param = {
@@ -320,5 +333,4 @@ export class ChatService {
     });
     return observable;
   }
-
 }
