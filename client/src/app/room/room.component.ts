@@ -70,6 +70,7 @@ export class RoomComponent implements OnInit {
       //console.log("succeeded?" + succeeded);
       this.messageHistory = [];
       this.messageHistory = lst;
+      this.msg = "";
     });
     console.log("message sent");
   }
@@ -103,10 +104,30 @@ export class RoomComponent implements OnInit {
     this.chatService.deban(this.OpUser, this.roomId).subscribe(succeeded => {});
   }
   onOp() {
-    this.chatService.Op(this.OpUser, this.roomId).subscribe(succeeded => {});
+    var isInRoom = false;
+    for(var u in this.users)
+    {
+      if(this.users[u] == this.OpUser)
+      {
+        isInRoom = true;
+      }
+    }
+    if(isInRoom) {
+      this.chatService.Op(this.OpUser, this.roomId).subscribe(succeeded => {});
+    }
   }
   onDeOp() {
-    this.chatService.deOp(this.OpUser, this.roomId).subscribe(succeeded => {});
+    var isInRoom = false;
+    for(var u in this.users)
+    {
+      if(this.users[u] == this.OpUser)
+      {
+        isInRoom = true;
+      }
+    }
+    if(isInRoom) {
+      this.chatService.deOp(this.OpUser, this.roomId).subscribe(succeeded => {});
+    }
   }
   onPsMsg() {
     this.chatService.privatemsg(this.psUser, this.roomId, this.psMsg).subscribe(succeeded => {});

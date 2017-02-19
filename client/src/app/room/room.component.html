@@ -16,15 +16,41 @@
 <div class="alert alert-success">
   <strong>Success!</strong> joined {{roomId}}.
 </div>-->
+<div class="row">
+  <div class="col-md-6">
+    <table class="table table-fixed">
+      <thead>
+        <tr>
+          <th class="col-xs-4">message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-xs-4">
+            <ul class="list-unstyled"><li *ngFor="let message of messageHistory">{{message}}</li></ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <table class="table table-fixed">
+      <thead>
+        <tr>
+          <th class="col-xs-4">users</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-xs-4">
+            <ul class="list-unstyled"><li *ngFor="let user of users">{{user}}</li></ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-
-
-<h1>Users</h1>
-<ul><li *ngFor="let user of users"> {{user}} </li></ul>
-
-<h1>Chatroom</h1>
-<ul><li *ngFor="let message of messageHistory"> {{message}} </li></ul>
-<ul><li *ngFor="let psmessage of PsmessageHistory"> {{psmessage}} </li></ul>
 
 <!--
 <div class="col-sm-5">
@@ -43,7 +69,7 @@
   <input type="text" class="form-control" [(ngModel)]="msg" />
   <button type="button" class="btn btn-success" (click)="onSend()">send message</button>
 </div>
-<h2>private messge</h2>
+<h2>private message</h2>
 
 <div class="form-inline">
     user:
