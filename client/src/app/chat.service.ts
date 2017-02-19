@@ -208,7 +208,7 @@ export class ChatService {
         user: username
       }
       var wasKicked;
-      var mess = "user " + username + "was kicked by " + this.user;
+      var mess = "user " + username + " was kicked by " + this.user;
       var param2 = {
         roomName: r,
         msg: mess
@@ -228,7 +228,7 @@ export class ChatService {
         room: r,
         user: username
       }
-      var mess = "user " + username + "was banned by " + this.user + " for being an asshole";
+      var mess = "user " + username + " was banned by " + this.user + " for being an asshole";
       var param2 = {
         roomName: r,
         msg: mess
@@ -248,7 +248,7 @@ export class ChatService {
         room: r,
         user: username
       }
-      var mess = "user " + username + "was OPed by " + this.user;
+      var mess = "user " + username + " was OPed by " + this.user;
       var param2 = {
         roomName: r,
         msg: mess
@@ -268,7 +268,7 @@ export class ChatService {
         room: r,
         user: username
       }
-      var mess = "user " + username + "was debaned by" + this.user + " try to behave your self this time";
+      var mess = "user " + username + " was debaned by" + this.user + " try to behave your self this time";
       var param2 = {
         roomName: r,
         msg: mess
@@ -285,7 +285,7 @@ export class ChatService {
   deOp(username: string, r: string): Observable < boolean > {
     const observable = new Observable(observer => {
 
-      var mess = "user " + username + "was DeOped by" + this.user;
+      var mess = "user " + username + " was DeOped by" + this.user;
       var param2 = {
         roomName: r,
         msg: mess

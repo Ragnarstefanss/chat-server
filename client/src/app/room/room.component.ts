@@ -55,6 +55,7 @@ export class RoomComponent implements OnInit {
     }
     this.chatService.sendmsg(this.roomId, this.msg).subscribe(lst => {
       //console.log("succeeded?" + succeeded);
+      this.msg = "";
       this.messageHistory = lst;
     });
     console.log("message sent");
@@ -76,21 +77,24 @@ export class RoomComponent implements OnInit {
   }
   onKick() {
     this.chatService.kick(this.OpUser, this.roomId).subscribe(succeeded => {
+      this.OpUser = "";
       console.log("kicked " + this.OpUser);
     });
   }
   onBan() {
+    this.OpUser = "";
     this.chatService.ban(this.OpUser, this.roomId).subscribe(succeeded => {});
-
   }
   onDeBan() {
-    console.log("deban");
+    this.OpUser = "";
     this.chatService.deban(this.OpUser, this.roomId).subscribe(succeeded => {});
   }
   onOp() {
+    this.OpUser = "";
     this.chatService.Op(this.OpUser, this.roomId).subscribe(succeeded => {});
   }
   onDeOp() {
+    this.OpUser = "";
     this.chatService.deOp(this.OpUser, this.roomId).subscribe(succeeded => {});
   }
   onPsMsg() {
