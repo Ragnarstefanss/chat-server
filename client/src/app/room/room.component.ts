@@ -7,9 +7,8 @@ import { Router, ActivatedRoute } from "@angular/router";
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })
-
 export class RoomComponent implements OnInit {
-  constructor(private chatService: ChatService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private chatService: ChatService, private router: Router, private route: ActivatedRoute) { }
   msg: string;
   roomId: string;
   users: string[];
@@ -33,6 +32,7 @@ export class RoomComponent implements OnInit {
       this.topic = lst;
     })
     this.chatService.sendmsg(this.roomId, "Joined").subscribe(lst => {
+      //console.log("succeeded?" + succeeded);
       this.messageHistory = lst;
     });
     this.chatService.showUsers(this.roomId).subscribe(lst => {
@@ -44,19 +44,21 @@ export class RoomComponent implements OnInit {
       if (lst == true) {
         console.log("you are an op");
         this.admin = true;
-      } else {
+      }
+      else {
         this.admin = false;
       }
     })
-
-
     this.chatService.onKickBan(this.roomId).subscribe(succeeded => {
       if (succeeded === true) {
         this.router.navigate(["./rooms"]);
       }
-
     })
     this.chatService.showPs().subscribe(result => {
+      console.log("result = " + result);
+      if (this.PsmessageHistory == undefined) {
+        this.PsmessageHistory = [];
+      }
       this.PsmessageHistory.push(result);
     })
 
@@ -72,6 +74,7 @@ export class RoomComponent implements OnInit {
       this.messageHistory = lst;
       this.msg = "";
     });
+
     console.log("message sent");
   }
   onLeave() {
@@ -79,18 +82,28 @@ export class RoomComponent implements OnInit {
       if (succeeded === true) {
         console.log("bleh test");
         this.router.navigate(["./rooms"]);
-      } else {
+      }
+      else {
         console.log("bleh else");
       }
     });
     this.router.navigate(["./rooms"]);
   }
+  //does not work propperly you
   onDisconnect() {
-    this.chatService.disconnect(this.roomId).subscribe(succeeded => {});
-    this.router.navigate(["./"]);
+    this.chatService.disconnect(this.roomId).subscribe(succeeded => {
+      console.log(succeeded);
+      if (succeeded == true) {
+        this.router.navigate(["../"]);
+      }
+      this.router.navigate(["../"]);
+    });
+
+
   }
   onChangeTopic() {
-    this.chatService.setTopic(this.roomId, this.newTopic).subscribe(succeeded => {});
+    this.chatService.setTopic(this.roomId, this.newTopic).subscribe(succeeded => {
+    });
   }
   onKick() {
     this.chatService.kick(this.OpUser, this.roomId).subscribe(succeeded => {
@@ -98,38 +111,60 @@ export class RoomComponent implements OnInit {
     });
   }
   onBan() {
-    this.chatService.ban(this.OpUser, this.roomId).subscribe(succeeded => {});
+    var isInRoom = false;
+    for (var u in this.users) {
+      if (this.users[u] == this.OpUser) {
+        console.log("user is in room");
+        isInRoom = true;
+      }
+    }
+    if (isInRoom == true) {
+      this.chatService.ban(this.OpUser, this.roomId).subscribe(succeeded => {
+      });
+    }
+
   }
   onDeBan() {
-    this.chatService.deban(this.OpUser, this.roomId).subscribe(succeeded => {});
+    console.log("deban");
+    this.chatService.deban(this.OpUser, this.roomId).subscribe(succeeded => {
+    });
   }
   onOp() {
     var isInRoom = false;
-    for(var u in this.users)
-    {
-      if(this.users[u] == this.OpUser)
-      {
+    for (var u in this.users) {
+      if (this.users[u] == this.OpUser) {
+        console.log("user is in room");
         isInRoom = true;
       }
     }
-    if(isInRoom) {
-      this.chatService.Op(this.OpUser, this.roomId).subscribe(succeeded => {});
+    if (isInRoom == true) {
+      this.chatService.Op(this.OpUser, this.roomId).subscribe(succeeded => {
+      });
     }
+
   }
   onDeOp() {
     var isInRoom = false;
-    for(var u in this.users)
-    {
-      if(this.users[u] == this.OpUser)
-      {
+    var test = this.OpUser + " *OP*";
+    for (var u in this.users) {
+
+      if (this.users[u] == test) {
         isInRoom = true;
       }
     }
-    if(isInRoom) {
-      this.chatService.deOp(this.OpUser, this.roomId).subscribe(succeeded => {});
+
+    if (isInRoom == true) {
+      this.chatService.deOp(this.OpUser, this.roomId).subscribe(succeeded => {
+      });
     }
   }
   onPsMsg() {
-    this.chatService.privatemsg(this.psUser, this.roomId, this.psMsg).subscribe(succeeded => {});
+    this.chatService.privatemsg(this.psUser, this.roomId, this.psMsg).subscribe(succeeded => {
+      var tempMsg = "(" + this.psUser + ")" + ": " + this.psMsg;
+      if (this.PsmessageHistory == undefined) {
+        this.PsmessageHistory = [];
+      }
+      this.PsmessageHistory.push(tempMsg);
+    });
   }
 }

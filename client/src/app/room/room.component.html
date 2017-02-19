@@ -32,7 +32,12 @@
         </tr>
       </tbody>
     </table>
+    <div class="form-inline">
+      <input type="text" class="form-control" [(ngModel)]="msg" />
+      <button type="button" class="btn btn-success" (click)="onSend()">send message</button>
+    </div>
   </div>
+
   <div class="col-md-6">
     <table class="table table-fixed">
       <thead>
@@ -51,26 +56,25 @@
   </div>
 </div>
 
-
-<!--
-<div class="col-sm-5">
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <strong>myusername</strong> <span class="text-muted">commented 5 days ago</span>
-  </div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-</div>
--->
-
-<div class="form-inline">
-  <input type="text" class="form-control" [(ngModel)]="msg" />
-  <button type="button" class="btn btn-success" (click)="onSend()">send message</button>
-</div>
 <h2>private message</h2>
-
+<div class="row">
+  <div class="col-md-6">
+    <table class="table table-fixed">
+      <thead>
+        <tr>
+          <th class="col-xs-4">Private message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-xs-4">
+            <ul class="list-unstyled">  <li *ngFor="let psmessage of PsmessageHistory">{{psmessage}}</li></ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 <div class="form-inline">
     user:
     <input type="text" class="form-control" [(ngModel)]="psUser" /> message:
@@ -91,3 +95,4 @@
     <button type="button" class="btn btn-primary" (click)="onDeOp()">deop</button>
   </div>
 </div>
+<br><br><br>
