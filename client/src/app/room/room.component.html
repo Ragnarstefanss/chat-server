@@ -7,8 +7,7 @@
 <br>
 <div [hidden]="!admin">
     <div class="form-inline">
-      <label for="new_topic">Topic:</label>
-      <input type="text" class="form-control" id="new_topic" [(ngModel)]="newTopic" />
+      <input type="text" class="form-control" [(ngModel)]="newTopic" />
       <button type="button" class="btn btn-info" (click)="onChangeTopic()">changeTopic</button>
     </div>
 </div>
@@ -25,6 +24,7 @@
 
 <h1>Chatroom</h1>
 <ul><li *ngFor="let message of messageHistory"> {{message}} </li></ul>
+<ul><li *ngFor="let psmessage of PsmessageHistory"> {{psmessage}} </li></ul>
 
 <!--
 <div class="col-sm-5">
@@ -49,7 +49,7 @@
     user:
     <input type="text" class="form-control" [(ngModel)]="psUser" /> message:
     <input type="text" class="form-control" [(ngModel)]="psMsg" />
-    <button type="button" class="btn btn-default" (click)="onSend()">send private message</button>
+    <button type="button" class="btn btn-default" (click)="onPsMsg()">send private message</button>
 </div>
 
 <div [hidden]="!admin">

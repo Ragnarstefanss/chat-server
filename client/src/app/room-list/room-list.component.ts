@@ -8,20 +8,22 @@ import { Router } from "@angular/router";
   styleUrls: ['./room-list.component.css']
 })
 export class RoomListComponent implements OnInit {
-  constructor(private chatService: ChatService, private router: Router) {}
+
+  constructor(private chatService : ChatService, private router: Router) { }
+
   rooms: string[];
   roomName: string;
 
+
   ngOnInit() {
-    this.chatService.getRoomsList().subscribe(lst => { this.rooms = lst; })
-  }
+    this.chatService.getRoomsList().subscribe(lst => {
+      this.rooms = lst;
+    })
 
-  clickNewRoom(roomname: string) {
-    this.roomName = roomname;
-    this.onJoinRoom();
   }
-
   onJoinRoom() {
+
+    console.log("joinRoom called in component");
     if (this.roomName.length < 1) {
       return;
     }
@@ -31,5 +33,11 @@ export class RoomListComponent implements OnInit {
       }
     });
   }
-  
+
+  clickNewRoom(roomname : string)
+  {
+    this.roomName = roomname;
+    this.onJoinRoom();
+  }
+
 }

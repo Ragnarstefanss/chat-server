@@ -1,10 +1,6 @@
-import {
-  Injectable
-} from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as io from "socket.io-client";
-import {
-  Observable
-} from "rxjs/Observable";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class ChatService {
@@ -53,28 +49,6 @@ export class ChatService {
       });
     });
     return observable;
-  }
-  showChat(roomName: string): Observable < string[] > {
-    let obs = new Observable(observer => {
-      this.socket.emit("rooms");
-      this.socket.on("roomlist", (lst) => {
-        let strArr: string[] = [];
-
-        for (var x in lst) {
-          if (x == roomName) {
-            for (var y in (lst[x]["messageHistory"])) {
-              console.log("y :" + y);
-              var tempMsg = (lst[x]["messageHistory"][y]["nick"]) + ": " + (lst[x]["messageHistory"][y]["message"]) + "  " + (lst[x]["messageHistory"][y]["timestamp"]);
-              //var tempMsg =(lst[x]["messageHistory"][y]);
-              console.log(tempMsg);
-              strArr.push(tempMsg);
-            }
-          }
-        }
-        observer.next(strArr);
-      })
-    });
-    return obs;
   }
 
   showUsers(roomName: string): Observable < string[] > {
@@ -161,6 +135,20 @@ export class ChatService {
     return observable;
   }
 
+  showPs(): Observable < string >
+    {
+      const observable = new Observable(observer => {
+        this.socket.on('recv_privatemsg', (username, message) => {
+          var tempMsg = username + ": " + message + "  ";
+          if (this.user == username) {
+            observer.next(tempMsg);
+          }
+        })
+      });
+      return observable;
+    }
+
+
   Leave(room: string): Observable < boolean > {
     const observable = new Observable(observer => {
       var mess = "left the room";
@@ -192,14 +180,13 @@ export class ChatService {
   }
   setTopic(room: string, topic: string): Observable < string > {
     const observable = new Observable(observer => {
-      var mess = "disconnected ";
       var param = {
         room: room,
         topic: topic
       }
       this.socket.emit("settopic", param);
     })
-    return observable;
+      return observable;
   }
   kick(username: string, r: string): Observable < boolean > {
     const observable = new Observable(observer => {
@@ -208,7 +195,7 @@ export class ChatService {
         user: username
       }
       var wasKicked;
-      var mess = "user " + username + " was kicked by " + this.user;
+      var mess = "user " + username + "was kicked by " + this.user;
       var param2 = {
         roomName: r,
         msg: mess
@@ -219,7 +206,7 @@ export class ChatService {
       });
 
     })
-    return observable;
+      return observable;
 
   }
   ban(username: string, r: string): Observable < boolean > {
@@ -228,7 +215,7 @@ export class ChatService {
         room: r,
         user: username
       }
-      var mess = "user " + username + " was banned by " + this.user + " for being an asshole";
+      var mess = "user " + username + "was banned by " + this.user + " for being an asshole";
       var param2 = {
         roomName: r,
         msg: mess
@@ -239,7 +226,7 @@ export class ChatService {
       });
 
     })
-    return observable;
+      return observable;
 
   }
   Op(username: string, r: string): Observable < boolean > {
@@ -248,7 +235,7 @@ export class ChatService {
         room: r,
         user: username
       }
-      var mess = "user " + username + " was OPed by " + this.user;
+      var mess = "user " + username + "was OPed by " + this.user;
       var param2 = {
         roomName: r,
         msg: mess
@@ -258,7 +245,7 @@ export class ChatService {
         observer.next(a);
       });
     })
-    return observable;
+      return observable;
 
   }
   deban(username: string, r: string): Observable < boolean > {
@@ -268,7 +255,7 @@ export class ChatService {
         room: r,
         user: username
       }
-      var mess = "user " + username + " was debaned by" + this.user + " try to behave your self this time";
+      var mess = "user " + username + "was debaned by" + this.user + " try to behave your self this time";
       var param2 = {
         roomName: r,
         msg: mess
@@ -279,13 +266,13 @@ export class ChatService {
       });
 
     })
-    return observable;
+      return observable;
 
   }
   deOp(username: string, r: string): Observable < boolean > {
     const observable = new Observable(observer => {
 
-      var mess = "user " + username + " was DeOped by" + this.user;
+      var mess = "user " + username + "was DeOped by" + this.user;
       var param2 = {
         roomName: r,
         msg: mess
@@ -300,30 +287,36 @@ export class ChatService {
       });
 
     })
-    return observable;
+      return observable;
 
   }
 
-  privatemsg(username: string, room: string, message: string) {
+  privatemsg(username: string, room: string, Message: string): Observable < boolean > {
+    const observable = new Observable(observer => {
+      var param = {
+        nick: username,
+        message: Message
+      }
+      this.socket.emit("privatemsg", param, function(a: boolean, b) {
+      })
 
+    });
+    return observable;
   }
   onKickBan(roomname: string): Observable < boolean > {
     const observable = new Observable(observer => {
-      this.socket.on('updateusers', (roomName, users, ops) => {
-        var temp = false;
-        for (var x in ops) {
-          if (this.user == x) {
-            temp = true;
-          }
+      this.socket.on('banned', (room, user, username) => {
+        if (room == roomname && user == this.user) {
+          observer.next(true);
+          console.log("you got banned");
         }
-        for (var x in users) {
-          {
-            temp = true;
-          }
+      });
+      this.socket.on('kicked', (room, user, username) => {
+        if (room == roomname && user == this.user) {
+          observer.next(true);
+          console.log("you got kicked");
         }
-        observer.next(temp);
-      })
-
+      });
     });
     return observable;
   }
