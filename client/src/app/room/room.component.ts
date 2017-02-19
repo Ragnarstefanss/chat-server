@@ -63,6 +63,7 @@ export class RoomComponent implements OnInit {
     }
     this.chatService.sendmsg(this.roomId, this.msg).subscribe(lst => {
       //console.log("succeeded?" + succeeded);
+      this.msg = ""
       this.messageHistory = [];
       this.messageHistory = lst;
     });
